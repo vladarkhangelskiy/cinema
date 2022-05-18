@@ -20,11 +20,11 @@ public class UserService {
         return userRepository.getAll();
     }
 
-    public User get(int id) throws SQLException {
+    public User get(int id) throws Exception {
         return userRepository.get(id);
     }
 
-    public void delete(User user) throws SQLException {
+    public void delete(User user) throws Exception {
         userRepository.delete(user);
     }
 

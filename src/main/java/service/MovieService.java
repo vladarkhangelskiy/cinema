@@ -18,7 +18,7 @@ public class MovieService {
         return movieRepository.getAll();
     }
 
-    public Movie get(int id) throws SQLException {
+    public Movie get(int id) throws Exception {
         return movieRepository.get(id);
     }
 

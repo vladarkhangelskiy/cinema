@@ -23,12 +23,16 @@ public class TicketRepository {
         PreparedStatement preparedStatement = connector.getConnection().prepareStatement("SELECT * FROM ticket WHERE id = ?");
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
-        return new Ticket(
-            resultSet.getInt("id"),
-            resultSet.getInt("price"),
-            resultSet.getInt("seat"),
-            resultSet.getInt("userId"),
-            resultSet.getInt("movieId"));
+        if (resultSet.next()) {
+            return new Ticket(
+                    resultSet.getInt("id"),
+                    resultSet.getInt("price"),
+                    resultSet.getInt("seat"),
+                    resultSet.getInt("userId"),
+                    resultSet.getInt("movieId"));
+        } else {
+            return null;
+        }
     }
 
     public List<Ticket> getAll() throws SQLException {

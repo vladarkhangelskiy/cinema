@@ -2,7 +2,7 @@ package model;
 
 public class Entity {
 
-    private int id;
+    protected int id;
 
     public Entity(int id) {
         this.id = id;
@@ -18,5 +18,6 @@ public class Entity {
     public void setId(int id) {
         this.id = id;
     }
+
 }
 

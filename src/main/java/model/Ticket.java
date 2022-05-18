@@ -46,4 +46,15 @@ public class Ticket extends Entity{
     public void setMovieId(int movieId) {
         this.movieId = movieId;
     }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", price=" + price +
+                ", seat=" + seat +
+                ", userId=" + userId +
+                ", movieId=" + movieId +
+                '}';
+    }
 }

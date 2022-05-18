@@ -4,21 +4,25 @@ import java.util.Date;
 
 public class Movie extends Entity{
 
-    private String tittle;
+    private String title;
     private Date date;
 
-    public Movie(int id, String tittle, Date date) {
+    public Movie() {
+
+    }
+
+    public Movie(int id, String title, Date date) {
         super(id);
-        this.tittle = tittle;
+        this.title = title;
         this.date = date;
     }
 
     public String getTittle() {
-        return tittle;
+        return title;
     }
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Date getDate() {
@@ -27,5 +31,14 @@ public class Movie extends Entity{
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", date=" + date +
+                '}';
     }
 }

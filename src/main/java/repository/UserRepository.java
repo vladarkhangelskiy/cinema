@@ -22,11 +22,15 @@ public class UserRepository {
         PreparedStatement preparedStatement = connector.getConnection().prepareStatement("SELECT * FROM user WHERE username = ?");
         preparedStatement.setString(1, username);
         ResultSet resultSet = preparedStatement.executeQuery();
-        return new User(
-                resultSet.getInt("id"),
-                resultSet.getString("username"),
-                resultSet.getString("password"),
-                UserRole.valueOf(resultSet.getString("userRole")));
+        if (resultSet.next()) {
+            return new User(
+                    resultSet.getInt("id"),
+                    resultSet.getString("username"),
+                    resultSet.getString("password"),
+                    UserRole.valueOf(resultSet.getString("userRole")));
+        } else {
+            return null;
+        }
     }
 
     public User get(String username, String password) throws SQLException {
@@ -34,22 +38,30 @@ public class UserRepository {
         preparedStatement.setString(1, username);
         preparedStatement.setString(2, password);
         ResultSet resultSet = preparedStatement.executeQuery();
-        return new User(
-                resultSet.getInt("id"),
-                resultSet.getString("username"),
-                resultSet.getString("password"),
-                UserRole.valueOf(resultSet.getString("userRole")));
+        if (resultSet.next()) {
+            return new User(
+                    resultSet.getInt("id"),
+                    resultSet.getString("username"),
+                    resultSet.getString("password"),
+                    UserRole.valueOf(resultSet.getString("userRole")));
+        } else {
+            return null;
+        }
     }
 
-    public User get(int id) throws SQLException {
+    public User get(int id) throws Exception {
         PreparedStatement preparedStatement = connector.getConnection().prepareStatement("SELECT * FROM user WHERE id = ?");
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
-        return new User(
-                resultSet.getInt("id"),
-                resultSet.getString("username"),
-                resultSet.getString("password"),
-                UserRole.valueOf(resultSet.getString("userRole")));
+        if (resultSet.next()) {
+            return new User(
+                    resultSet.getInt("id"),
+                    resultSet.getString("username"),
+                    resultSet.getString("password"),
+                    UserRole.valueOf(resultSet.getString("userRole")));
+        } else {
+            throw new Exception("пользователь не найден");
+        }
     }
 
     public List<User> getAll() throws SQLException {
@@ -69,11 +81,14 @@ public class UserRepository {
         PreparedStatement preparedStatement = connector.getConnection().prepareStatement("UPDATE user SET username = ?, password = ? where id = ?");
         preparedStatement.setString(1, user.getUsername());
         preparedStatement.setString(2, user.getPassword());
-        preparedStatement.setInt(5, user.getId());
+        preparedStatement.setInt(3, user.getId());
         preparedStatement.executeUpdate();
     }
 
-    public void delete (User user) throws SQLException {
+    public void delete (User user) throws Exception {
+        if (user.getUserRole() != UserRole.USER) {
+            throw new Exception("нельзя удалить админа или менеджера");
+        }
         PreparedStatement preparedStatement = connector.getConnection().prepareStatement("DELETE FROM user WHERE id = ?");
         preparedStatement.setInt(1, user.getId());
         preparedStatement.executeUpdate();
@@ -81,9 +96,10 @@ public class UserRepository {
 
     public void add(User user) throws SQLException {
         PreparedStatement preparedStatement = connector.getConnection().prepareStatement("INSERT INTO user" +
-                " (username , password) values(?, ?)");
+                " (username , password, userRole) values(?, ?, ?)");
         preparedStatement.setString(1, user.getUsername());
         preparedStatement.setString(2, user.getPassword());
+        preparedStatement.setString(3, user.getUserRole().name());
         preparedStatement.executeUpdate();
     }
 }

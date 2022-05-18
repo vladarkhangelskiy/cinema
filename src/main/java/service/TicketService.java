@@ -25,7 +25,7 @@ public class TicketService {
         ticketRepository.add(ticket);
     }
 
-    public List<Ticket> getAvailableTicketForMovie(Movie movie) throws SQLException {
+    public List<Ticket> getAvailableTicketsForMovie(Movie movie) throws SQLException {
         List<Ticket> tickets = ticketRepository.getAll();
         List<Ticket> availableTicketsForMovie = new ArrayList<>();
 
